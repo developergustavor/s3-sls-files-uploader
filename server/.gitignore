@@ -1,0 +1,16 @@
+# modules
+node_modules
+.serverless
+.build
+
+# scripts
+scripts/deploy-hml.sh
+
+# env
+env/.env.dev
+env/.env.hml
+.env
+
+# packages
+*.lock
+*-lock.*

@@ -1,0 +1,21 @@
+version: '3.8'
+services:
+  localstack:
+    container_name: localstack
+    build: 
+      context: .
+      dockerfile: Dockerfile
+    env_file:
+      - .env
+    ports:
+      - "4566:4566"
+    environment:
+      - SERVICES=s3
+      - DEFAULT_REGION=${ACCESS_REGION}
+      - AWS_DEFAULT_REGION=${ACCESS_REGION}
+      - EDGE_PORT=4566
+      - DEBUG=1
+      - INIT_SCRIPTS_PATH=/docker-entrypoint-initaws.d
+      - BUCKET_NAME=${BUCKET_NAME}
+    volumes:
+      - "/var/run/docker.sock:/var/run/docker.sock"

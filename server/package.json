@@ -1,0 +1,44 @@
+{
+  "name": "s3-sls-files-uploader",
+  "version": "1.0.0",
+  "description": "Files upload service with Serverless Framework and AWS S3",
+  "repository": "https://github.com/developergustavor/s3-sls-files-uploader.git",
+  "author": {
+    "name": "Gustavo H. 💻🖥️",
+    "email": "developer.gustavor@gmail.com",
+    "url": "https://github.com/developergustavor"
+  },
+  "scripts": {
+    "postinstall": "echo 'Ready for use ! 🚀'",
+    "dev": "npm run docker:up && npx sls offline --disableCookieValidation",
+    "postdev": "npm run docker:down",
+    "start": "npm run dev",
+    "docker:up": "docker compose up -d",
+    "postdocker:up": "docker exec -it localstack sh -c '/docker-entrypoint-initaws.d/init.sh'",
+    "docker:down": "docker compose down",
+    "list-files": "sh scripts/list-files.sh",
+    "deploy:hml": "sh scripts/deploy-hml.sh"
+  },
+  "dependencies": {
+    "@aws-sdk/client-s3": "^3.0.0",
+    "@aws-sdk/lib-storage": "^3.722.0",
+    "ts-node": "^10.9.2",
+    "uuid": "^9.0.0"
+  },
+  "devDependencies": {
+    "@types/aws-lambda": "^8.10.119",
+    "@types/node": "^18.0.0",
+    "@types/uuid": "^9.0.2",
+    "serverless": "^3.34.0",
+    "serverless-auto-swagger": "^3.0.0",
+    "serverless-deployment-bucket": "^1.6.0",
+    "serverless-domain-manager": "^6.2.1",
+    "serverless-dotenv-plugin": "^4.0.2",
+    "serverless-offline": "^12.0.3",
+    "serverless-plugin-common-excludes": "^4.0.0",
+    "serverless-plugin-include-dependencies": "^5.1.0",
+    "serverless-plugin-split-stacks": "^1.12.0",
+    "serverless-plugin-typescript": "^2.1.4",
+    "typescript": "^5.0.0"
+  }
+}

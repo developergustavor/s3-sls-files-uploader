@@ -1,0 +1,84 @@
+service: file-upload-service
+frameworkVersion: "3"
+useDotenv: true
+
+plugins:
+  # - serverless-auto-swagger
+  - serverless-offline
+  - serverless-plugin-typescript
+  - serverless-deployment-bucket
+  - serverless-dotenv-plugin
+  # - serverless-domain-manager
+  - serverless-plugin-split-stacks
+  - serverless-plugin-common-excludes
+  - serverless-plugin-include-dependencies
+
+package:
+  excludeDevDependencies: true
+  
+provider:
+  name: aws
+  runtime: nodejs18.x
+  region: sa-east-1
+  deploymentMethod: direct
+  tracing:
+    lambda: true
+  deploymentBucket:
+    name: ${env:DEPLOYMENT_S3_BUCKET}
+    serverSideEncryption: AES256
+  iam:
+    role:
+      statements:
+        - Effect: Allow
+          Action:
+            - s3:PutObject
+            - s3:GetObject
+          Resource: "arn:aws:s3:::${env:BUCKET_NAME}/*"
+
+custom:
+  serverless-offline:
+    httpPort: ${env:PORT}
+    lambdaPort: ${env:LAMBDA_PORT}
+    noPrependStageInUrl: true
+
+  defaultCors:
+    origin: "*"
+    headers:
+      - Content-Type
+      - X-Amz-Date
+      - Authorization
+      - X-Api-Key
+      - X-Amz-Security-Token
+      - X-Amz-User-Agent
+
+  splitStacks:
+    perFunction: false
+    perType: true
+    perGroupFunction: false
+
+  # autoswagger:
+  #     # apiKeyHeaders: ['Authorization']
+  #     apiType: 'http'
+  #     # basePath: '/'
+  #     generateSwaggerOnDeploy: true
+  #     excludeStages: []
+  #     # host: 'https://s3-sls-files-uploader.developergustavor.com'
+  #     # lambdaAuthorizer: ${self:custom.myAuthorizer}
+  #     schemes: ['https']
+  #     swaggerFiles: []
+  #     # swaggerPath: 'swagger'
+  #     title: 'Files Uploader Service'
+  #     # description: 'Files upload service with Serverless Framework and AWS S3'
+  #     # version: '1.0.0'
+  #     typefiles: []
+  #     useStage: true # true when isn't development stage
+  #     useRedirectUI: false
+
+functions:
+  upload:
+    handler: src/handlers/upload.handler
+    events:
+      - http:
+          path: upload
+          method: post
+          cors: ${self:custom.defaultCors}
