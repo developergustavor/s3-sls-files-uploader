@@ -3,7 +3,7 @@
 ### Localhost
 1. install packages (yarn or npm install)
 2. copy the env/.env.example to .env and replace/adjust the variables values
-3. run `sudo chmod +x scripts/localstack.sh`
+3. run `sudo chmod +x docker-entrypointy-initaws.d/init.sh`
 4. run `yarn dev`
 5. to list the localstack files after the upload, run on the project's root folder:
     - `sudo chmod +x scripts/list-files.sh`

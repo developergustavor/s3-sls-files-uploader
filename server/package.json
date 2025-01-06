@@ -10,9 +10,10 @@
   },
   "scripts": {
     "postinstall": "echo 'Ready for use ! 🚀'",
-    "dev": "npm run docker:up && npx sls offline --disableCookieValidation",
+    "dev": "npm run docker:up & sleep 5 && npm run bucket && npx sls offline --disableCookieValidation",
     "postdev": "npm run docker:down",
     "start": "npm run dev",
+    "bucket": "docker exec -it localstack sh -c '/docker-entrypoint-initaws.d/init.sh'",
     "docker:up": "docker compose up -d",
     "postdocker:up": "docker exec -it localstack sh -c '/docker-entrypoint-initaws.d/init.sh'",
     "docker:down": "docker compose down",
